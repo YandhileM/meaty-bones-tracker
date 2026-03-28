@@ -9,10 +9,17 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "vue": "^3.5.30"
+    "@mdi/font": "^7.4.47",
+    "chart.js": "^4.5.1",
+    "pinia": "^3.0.4",
+    "vue": "^3.5.30",
+    "vue-chartjs": "^5.3.3",
+    "vue-router": "^5.0.4",
+    "vuetify": "^3.12.4"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^6.0.5",
-    "vite": "^8.0.1"
+    "vite": "^8.0.1",
+    "vite-plugin-vuetify": "^2.1.3"
   }
 }
