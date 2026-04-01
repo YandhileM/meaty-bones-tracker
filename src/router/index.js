@@ -1,6 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { isAuthenticated } from '../services/auth.js'
 import LoginView from '../views/LoginView.vue'
+import HomeView from '../views/HomeView.vue'
+import CustomersView from '../views/CustomersView.vue'
+import CustomerDetailView from '../views/CustomerDetailView.vue'
 
 const routes = [
   {
@@ -9,7 +12,15 @@ const routes = [
   },
   {
     path: '/',
-    component: { template: '<div>Home</div>' },
+    component: HomeView,
+  },
+  {
+    path: '/customers',
+    component: CustomersView,
+  },
+  {
+    path: '/customers/:id',
+    component: CustomerDetailView,
   },
 ]
 
