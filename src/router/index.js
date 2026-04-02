@@ -4,6 +4,7 @@ import LoginView from '../views/LoginView.vue'
 import HomeView from '../views/HomeView.vue'
 import CustomersView from '../views/CustomersView.vue'
 import CustomerDetailView from '../views/CustomerDetailView.vue'
+import StockView from '../views/StockView.vue'
 
 const routes = [
   {
@@ -21,6 +22,10 @@ const routes = [
   {
     path: '/customers/:id',
     component: CustomerDetailView,
+  },
+  {
+    path: '/stock',
+    component: StockView,
   },
 ]
 

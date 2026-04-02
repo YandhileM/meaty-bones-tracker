@@ -34,6 +34,8 @@ function logout() {
 
       <v-list nav density="compact">
         <v-list-item prepend-icon="mdi-view-dashboard" title="Dashboard" to="/" />
+        <v-list-item prepend-icon="mdi-account-group" title="Customers" to="/customers" />
+        <v-list-item prepend-icon="mdi-package-variant" title="Stock" to="/stock" />
       </v-list>
 
       <template #append>
