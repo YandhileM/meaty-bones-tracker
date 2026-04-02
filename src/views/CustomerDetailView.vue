@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useCustomersStore } from '../stores/customers.js'
 
@@ -14,6 +14,29 @@ onMounted(async () => {
 const customer = computed(() =>
   store.customers.find((c) => c.customerID === route.params.id)
 )
+
+const editDialog = ref(false)
+const saving = ref(false)
+const editForm = ref({ name: '', phone: '', notes: '' })
+
+function openEdit() {
+  editForm.value = {
+    name: customer.value.name,
+    phone: customer.value.phone,
+    notes: customer.value.notes,
+  }
+  editDialog.value = true
+}
+
+async function saveEdit() {
+  saving.value = true
+  try {
+    await store.updateCustomer(customer.value.customerID, editForm.value)
+    editDialog.value = false
+  } finally {
+    saving.value = false
+  }
+}
 </script>
 
 <template>
@@ -33,6 +56,10 @@ const customer = computed(() =>
           <h2 class="text-h5">{{ customer.name }}</h2>
           <span class="text-medium-emphasis">{{ customer.phone }}</span>
         </div>
+        <v-spacer />
+        <v-btn variant="tonal" prepend-icon="mdi-pencil" @click="openEdit">
+          Edit
+        </v-btn>
       </div>
 
       <!-- Stat cards -->
@@ -88,5 +115,48 @@ const customer = computed(() =>
     <v-alert v-else type="warning" variant="tonal">
       Customer not found.
     </v-alert>
+
+    <!-- Edit dialog -->
+    <v-dialog v-model="editDialog" max-width="440" persistent>
+      <v-card>
+        <v-card-title class="pt-5 px-6">Edit Customer</v-card-title>
+        <v-card-text class="px-6">
+          <v-text-field
+            v-model="editForm.name"
+            label="Name"
+            variant="outlined"
+            density="comfortable"
+            class="mb-3"
+          />
+          <v-text-field
+            v-model="editForm.phone"
+            label="Phone"
+            variant="outlined"
+            density="comfortable"
+            class="mb-3"
+          />
+          <v-textarea
+            v-model="editForm.notes"
+            label="Notes"
+            variant="outlined"
+            density="comfortable"
+            rows="2"
+          />
+        </v-card-text>
+        <v-card-actions class="px-6 pb-5">
+          <v-spacer />
+          <v-btn variant="text" @click="editDialog = false">Cancel</v-btn>
+          <v-btn
+            color="primary"
+            variant="flat"
+            :loading="saving"
+            :disabled="!editForm.name"
+            @click="saveEdit"
+          >
+            Save
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
