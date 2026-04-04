@@ -37,6 +37,7 @@ function logout() {
         <v-list-item prepend-icon="mdi-account-group" title="Customers" to="/customers" />
         <v-list-item prepend-icon="mdi-package-variant" title="Stock" to="/stock" />
         <v-list-item prepend-icon="mdi-clipboard-list" title="Orders" to="/orders" />
+        <v-list-item prepend-icon="mdi-cash" title="Payments" to="/payments" />
       </v-list>
 
       <template #append>
