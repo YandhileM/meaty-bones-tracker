@@ -79,6 +79,25 @@ const profitPerBatch = computed(() => {
   })
 })
 
+// WhatsApp reminder
+const customerByID = computed(() => {
+  const map = {}
+  for (const c of customersStore.customers) map[c.customerID] = c
+  return map
+})
+
+function whatsappLink(order) {
+  const customer = customerByID.value[order.customerID]
+  if (!customer) return null
+  const digits = customer.phone.replace(/\D/g, '')
+  const phone = digits.startsWith('0') ? '27' + digits.slice(1) : digits
+  const name = customer.name
+  const amount = fmt(order.totalOwed)
+  const due = order.dueDate
+  const message = `Hi ${name}, this is a friendly reminder that your payment of ${amount} for your meaty bones order was due on ${due}. Please arrange payment at your earliest convenience. Thank you!`
+  return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`
+}
+
 // 4. Gone quiet — last order more than 2 months ago (or never ordered)
 const goneQuiet = computed(() => {
   const lastOrder = {}
@@ -133,11 +152,12 @@ const goneQuiet = computed(() => {
             <th>Total Owed</th>
             <th>Due Date</th>
             <th>Status</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
           <tr v-if="overdueOrders.length === 0">
-            <td colspan="5" class="text-center text-medium-emphasis py-4">No overdue orders.</td>
+            <td colspan="6" class="text-center text-medium-emphasis py-4">No overdue orders.</td>
           </tr>
           <tr v-for="o in overdueOrders" :key="o.orderID">
             <td>{{ o.customerName }}</td>
@@ -148,6 +168,20 @@ const goneQuiet = computed(() => {
               <v-chip :color="o.status === 'Partial' ? 'warning' : 'error'" size="small" variant="tonal">
                 {{ o.status }}
               </v-chip>
+            </td>
+            <td>
+              <v-btn
+                v-if="whatsappLink(o)"
+                :href="whatsappLink(o)"
+                target="_blank"
+                rel="noopener"
+                color="success"
+                size="small"
+                variant="tonal"
+                prepend-icon="mdi-whatsapp"
+              >
+                Remind
+              </v-btn>
             </td>
           </tr>
         </tbody>
