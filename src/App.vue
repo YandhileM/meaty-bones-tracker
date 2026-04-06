@@ -39,6 +39,7 @@ function logout() {
         <v-list-item prepend-icon="mdi-clipboard-list" title="Orders" to="/orders" />
         <v-list-item prepend-icon="mdi-cash" title="Payments" to="/payments" />
         <v-list-item prepend-icon="mdi-chart-bar" title="Reports" to="/reports" />
+        <v-list-item prepend-icon="mdi-cog" title="Settings" to="/settings" />
       </v-list>
 
       <template #append>

@@ -1,8 +1,10 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 import { useBatchesStore } from '../stores/batches.js'
+import { useSettingsStore } from '../stores/settings.js'
 
 const store = useBatchesStore()
+const settingsStore = useSettingsStore()
 
 const dialog = ref(false)
 const saving = ref(false)
@@ -20,7 +22,20 @@ const totalInvestedPreview = computed(() => {
   return qty > 0 && cost > 0 ? qty * cost : null
 })
 
-onMounted(() => store.fetchBatches())
+watch(
+  () => form.value.costPricePerPacket,
+  (cost) => {
+    const markup = Number(settingsStore.settings['default_markup'] || 0)
+    const c = Number(cost)
+    if (c > 0 && markup > 0) {
+      form.value.sellingPricePerPacket = (c * (1 + markup / 100)).toFixed(2)
+    }
+  }
+)
+
+onMounted(async () => {
+  await Promise.all([store.fetchBatches(), settingsStore.fetchSettings()])
+})
 
 async function submit() {
   saving.value = true

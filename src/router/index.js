@@ -8,6 +8,7 @@ import StockView from '../views/StockView.vue'
 import OrdersView from '../views/OrdersView.vue'
 import PaymentsView from '../views/PaymentsView.vue'
 import ReportsView from '../views/ReportsView.vue'
+import SettingsView from '../views/SettingsView.vue'
 
 const routes = [
   {
@@ -41,6 +42,10 @@ const routes = [
   {
     path: '/reports',
     component: ReportsView,
+  },
+  {
+    path: '/settings',
+    component: SettingsView,
   },
 ]
 
