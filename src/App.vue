@@ -1,7 +1,7 @@
 <script setup>
-import { computed, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useTheme } from 'vuetify'
+import { useTheme, useDisplay } from 'vuetify'
 import { useThemeStore } from './stores/theme.js'
 import { clearAuth } from './services/auth.js'
 
@@ -9,8 +9,14 @@ const route = useRoute()
 const router = useRouter()
 const vuetifyTheme = useTheme()
 const themeStore = useThemeStore()
+const { mdAndUp } = useDisplay()
 
 const isLoginPage = computed(() => route.path === '/login')
+const drawer = ref(mdAndUp.value)
+
+watch(mdAndUp, (isDesktop) => {
+  drawer.value = isDesktop
+})
 
 watch(
   () => themeStore.isDark,
@@ -28,7 +34,7 @@ function logout() {
 
 <template>
   <v-app>
-    <v-navigation-drawer v-if="!isLoginPage" permanent>
+    <v-navigation-drawer v-if="!isLoginPage" v-model="drawer">
       <v-list-item title="Meaty Bones" subtitle="Credit Tracker" class="py-4" />
       <v-divider />
 
@@ -60,6 +66,7 @@ function logout() {
     </v-navigation-drawer>
 
     <v-app-bar v-if="!isLoginPage" elevation="1">
+      <v-app-bar-nav-icon @click="drawer = !drawer" />
       <v-app-bar-title>Meaty Bones Tracker</v-app-bar-title>
       <template #append>
         <v-btn
