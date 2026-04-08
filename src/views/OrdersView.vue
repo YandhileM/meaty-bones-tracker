@@ -118,21 +118,9 @@ async function submit() {
             <td>{{ o.dateGiven }}</td>
             <td>{{ o.dueDate }}</td>
             <td>
-              <v-select
-                :model-value="o.status"
-                :items="['Unpaid', 'Partial', 'Paid']"
-                density="compact"
-                variant="plain"
-                hide-details
-                style="min-width: 100px"
-                @update:model-value="(val) => ordersStore.updateOrderStatus(o.orderID, val)"
-              >
-                <template #selection="{ item }">
-                  <v-chip :color="statusColor(item.value)" size="small" variant="tonal">
-                    {{ item.value }}
-                  </v-chip>
-                </template>
-              </v-select>
+              <v-chip :color="statusColor(o.status)" size="small" variant="tonal">
+                {{ o.status }}
+              </v-chip>
             </td>
           </tr>
         </tbody>
