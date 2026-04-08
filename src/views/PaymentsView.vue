@@ -75,7 +75,11 @@ async function submit() {
       notes: form.value.notes,
     })
 
-    const newStatus = amountPaid >= totalOwed ? 'Paid' : 'Partial'
+    const previouslyPaid = paymentsStore.payments
+      .filter((p) => p.orderID === form.value.orderID)
+      .reduce((sum, p) => sum + Number(p.amountPaid || 0), 0)
+    const totalPaid = previouslyPaid + amountPaid
+    const newStatus = totalPaid >= totalOwed ? 'Paid' : 'Partial'
     await ordersStore.updateOrderStatus(form.value.orderID, newStatus)
 
     dialog.value = false
